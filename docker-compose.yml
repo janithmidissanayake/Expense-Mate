@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "password123#"
+      MYSQL_DATABASE: register_service  # The pre-existing database you want to use
+      MYSQL_USER: JANI_ONE
+      MYSQL_PASSWORD: Janithmi_pw
+    ports:
+      - "3306:3306"  # Expose MySQL on port 3306
+    volumes:
+      - mysql_data:/var/lib/mysql  # Persist MySQL data
+
+  backend:
+    build: ./expense-tracker  # Path to your Spring Boot backend Dockerfile
+    container_name: expense-tracker-backend
+    restart: always
+    depends_on:
+      - mysql  # Ensure MySQL is available before starting backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/register_service?useSSL=false&allowPublicKeyRetrieval=true  # Use mysql service in Docker
+      SPRING_DATASOURCE_USERNAME: JANI_ONE  # ✅ Use the non-root user
+      SPRING_DATASOURCE_PASSWORD: Janithmi_pw  # ✅ Match MYSQL_USER password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"  # Expose Spring Boot backend on port 8080
+
+volumes:
+  mysql_data:
