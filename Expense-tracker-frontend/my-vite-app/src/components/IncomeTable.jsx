@@ -34,7 +34,7 @@ const IncomeTable = ({incomeData, onUpdateIncomes}) => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/income-controller/update-income/${editedIncome.id}?userId=${userId}`,
+        `/api/v1/income-controller/update-income/${editedIncome.id}?userId=${userId}`,
         editedIncome
       );
       
@@ -56,7 +56,7 @@ const IncomeTable = ({incomeData, onUpdateIncomes}) => {
   const handleDelete = async (incomeId) => {
     try {
       await axios.delete(
-        `http://localhost:8080/api/v1/income-controller/delete-income/${incomeId}?userId=${userId}`
+        `/api/v1/income-controller/delete-income/${incomeId}?userId=${userId}`
       );
       
       // Remove the deleted income from the state

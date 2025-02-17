@@ -14,7 +14,7 @@ import {
   } from 'lucide-react';
 const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const { logOut } = useAuth(); // Access logOut function from AuthProvider
+    const { logOut,user } = useAuth(); // Access logOut function from AuthProvider
     const navigate = useNavigate(); // Initialize navigate
   
     const handleLogout = () => {
@@ -22,14 +22,18 @@ const Sidebar = () => {
     };
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', badge: null,action: () => navigate('/dashboard') },
-    { icon: PieChart, label: 'Analytics', badge: null,action: () => navigate('/hello') },
-    { icon: Tags, label: 'Categories', badge: null,action: () => navigate('/income') },
-    { icon: Wallet, label: 'Budgets', badge: '3',action: () => navigate('/expense') },
-    { icon: Users, label: 'Split Expenses', badge: null ,action: () => navigate('/category')},
-    { icon: Settings, label: 'logout', badge: null,action: handleLogout },
+
+    { icon: LayoutDashboard, label: 'Dashboard', badge: null,action: () => navigate('/dashboard'),allowedRoles: ['ADMIN', 'USER'] },
+    { icon: PieChart, label: 'Analytics', badge: null,action: () => navigate('/hello'),allowedRoles: ['ADMIN', 'USER'] },
+    { icon: Tags, label: 'Categories', badge: null,action: () => navigate('/income'),allowedRoles: ['ADMIN', 'USER'] },
+    { icon: Wallet, label: 'Budgets', badge: '3',action: () => navigate('/expense') ,allowedRoles: ['ADMIN', 'USER']},
+    { icon: Users, label: 'Split Expenses', badge: null ,action: () => navigate('/category'),allowedRoles: ['ADMIN']},
+    { icon: Settings, label: 'logout', badge: null,action: handleLogout,allowedRoles: ['ADMIN', 'USER'] },
   ];
-  return (
+    console.log("User Data:", user);
+    console.log("User Role:", user?.role);
+
+    return (
     <div className={`bg-white border-r border-gray-200 h-screen transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
     {/* Header */}
     <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -57,28 +61,31 @@ const Sidebar = () => {
     </div>
 
     {/* Navigation */}
-    <nav className="mt-4">
-      {menuItems.map((item) => (
-        <button
-          key={item.label}
-          className={`w-full flex items-center text-gray-600 hover:bg-gray-50 transition-all p-4 gap-4 ${isCollapsed ? 'justify-center' : ''}`}
-          onClick={item.action}
-        >
-          <item.icon className="h-5 w-5" />
-          {!isCollapsed && (
-            <div className="flex flex-1 items-center justify-between">
-              <span>{item.label}</span>
-              {item.badge && (
-                <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full">
-                  {item.badge}
-                </span>
-              )}
-            </div>
-          )}
-        </button>
-      ))}
-    </nav>
-    
+        {/* Navigation */}
+        <nav className="mt-4">
+            {menuItems
+                .filter((item) => item.allowedRoles.includes(user?.role)) // Uncomment this line
+                .map((item) => (
+                    <button
+                        key={item.label}
+                        className={`w-full flex items-center text-gray-600 hover:bg-gray-50 transition-all p-4 gap-4 ${isCollapsed ? 'justify-center' : ''}`}
+                        onClick={item.action}
+                    >
+                        <item.icon className="h-5 w-5" />
+                        {!isCollapsed && (
+                            <div className="flex flex-1 items-center justify-between">
+                                <span>{item.label}</span>
+                                {item.badge && (
+                                    <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full">
+                {item.badge}
+              </span>
+                                )}
+                            </div>
+                        )}
+                    </button>
+                ))}
+        </nav>
+
     {/* User Profile */}
     <div className="absolute bottom-0 w-full border-t border-gray-200">
       <button className={`w-full flex items-center gap-3 p-4 hover:bg-gray-50 ${isCollapsed ? 'justify-center' : ''}`}>

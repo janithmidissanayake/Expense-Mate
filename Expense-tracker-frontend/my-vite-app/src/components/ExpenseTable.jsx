@@ -33,7 +33,7 @@ const ExpenseTable = ({expenseData,onUpdateExpense}) => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/expense-controller/update-expense/${editedExpense.id}?userId=${userId}`,
+        `/api/v1/expense-controller/update-expense/${editedExpense.id}?userId=${userId}`,
         editedExpense
       );
       
@@ -55,7 +55,7 @@ const ExpenseTable = ({expenseData,onUpdateExpense}) => {
   const handleDelete = async (expenseId) => {
     try {
       await axios.delete(
-        `http://localhost:8080/api/v1/expense-controller/delete-expense/${expenseId}?userId=${userId}`
+        `/api/v1/expense-controller/delete-expense/${expenseId}?userId=${userId}`
       );
       
       // Remove the deleted income from the state

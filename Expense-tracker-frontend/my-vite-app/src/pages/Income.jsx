@@ -18,7 +18,7 @@ import axios from 'axios'; // Import Axios
       if (userId) {
         const fetchIncomeData = async () => {
           try {
-            const response = await axios.get(`http://localhost:8080/api/v1/income-controller/incomes?userId=${userId}`);
+            const response = await axios.get(`/api/v1/income-controller/incomes?userId=${userId}`);
             console.log("ooooo"+response.data);
             setIncomeData(response.data);
             

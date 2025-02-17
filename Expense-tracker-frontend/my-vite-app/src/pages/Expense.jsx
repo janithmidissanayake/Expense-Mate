@@ -19,7 +19,7 @@ const Expense = () => {
       if (userId) {
         const fetchExpenseData = async () => {
           try {
-            const response = await axios.get(`http://localhost:8080/api/v1/expense-controller/expenses?userId=${userId}`);
+            const response = await axios.get(`/api/v1/expense-controller/expenses?userId=${userId}`);
             console.log("ooooo"+response.data);
             setExpenseData(response.data);
             

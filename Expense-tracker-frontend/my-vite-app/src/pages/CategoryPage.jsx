@@ -27,7 +27,7 @@ const CategoryPage = () => {
     setMessage({ text: '', type: '' });
     if(userId){
         try {
-            const response = await axios.post(`http://localhost:8080/api/v1/category-controller/createCategory?userId=${userId}`, formData);
+            const response = await axios.post(`/api/v1/category-controller/createCategory?userId=${userId}`, formData);
             console.log('Category created:', response.data);
             setMessage({ text: 'Category created successfully', type: 'success' });
             setFormData({ name: '', type: 'EXPENSE' });

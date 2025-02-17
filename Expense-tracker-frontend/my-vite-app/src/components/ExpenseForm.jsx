@@ -22,7 +22,7 @@ const IncomeForm = () => {
     if (userId) {
       const fetchCategoryForExpense = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/v1/category-controller/expense-categories?userId=${userId}`);
+          const response = await axios.get(`/api/v1/category-controller/expense-categories?userId=${userId}`);
           console.log("Expeseeeee"+response.data);
           setCategories(response.data);
           
@@ -60,7 +60,7 @@ const IncomeForm = () => {
         delete payload.categoryName; // Remove category name from payload
 
         const response = await axios.post(
-          `http://localhost:8080/api/v1/expense-controller/createExpense?userId=${userId}`,
+          `/api/v1/expense-controller/createExpense?userId=${userId}`,
           payload
         );
         console.log("Income successfully created:", response.data);

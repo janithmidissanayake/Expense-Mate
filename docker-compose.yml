@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   mysql:
@@ -7,27 +6,44 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "password123#"
-      MYSQL_DATABASE: register_service  # The pre-existing database you want to use
+      MYSQL_DATABASE: register_service
       MYSQL_USER: JANI_ONE
       MYSQL_PASSWORD: Janithmi_pw
     ports:
-      - "3306:3306"  # Expose MySQL on port 3306
+      - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql  # Persist MySQL data
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   backend:
-    build: ./expense-tracker  # Path to your Spring Boot backend Dockerfile
+    build: ./expense-tracker
     container_name: expense-tracker-backend
     restart: always
     depends_on:
-      - mysql  # Ensure MySQL is available before starting backend
+      mysql:
+        condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/register_service?useSSL=false&allowPublicKeyRetrieval=true  # Use mysql service in Docker
-      SPRING_DATASOURCE_USERNAME: JANI_ONE  # ✅ Use the non-root user
-      SPRING_DATASOURCE_PASSWORD: Janithmi_pw  # ✅ Match MYSQL_USER password
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/register_service?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: JANI_ONE
+      SPRING_DATASOURCE_PASSWORD: Janithmi_pw
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
-      - "8080:8080"  # Expose Spring Boot backend on port 8080
+      - "8080:8080"
+
+  frontend:
+    build: ./expense-tracker-frontend/my-vite-app
+    container_name: expense-tracker-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+#    environment:
+#      - VITE_API_URL=http://backend:8080/api  # Ensure this is defined here
+
 
 volumes:
   mysql_data:

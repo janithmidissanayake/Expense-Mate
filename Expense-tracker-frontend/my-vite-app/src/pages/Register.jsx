@@ -52,7 +52,7 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/auth/register', formData);
+      const response = await axios.post(`/api/v1/auth/register`, formData);
       console.log('User registered successfully:', response.data);
       showNotification(
         'success',

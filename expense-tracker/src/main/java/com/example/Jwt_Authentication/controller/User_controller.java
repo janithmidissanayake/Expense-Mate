@@ -26,6 +26,7 @@ public class User_controller {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .id(user.getId())
+                .role(user.getRole())
                 .build();
 
         return userResponse ;

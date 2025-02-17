@@ -26,7 +26,7 @@ const Dashboard = () => {
     if (userId) {  // Only fetch data if userId exists
       const fetchIncomeCategoryData = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/v1/summary-controller/category-IncomeSummary?userId=${userId}`);
+          const response = await axios.get(`/api/v1/summary-controller/category-IncomeSummary?userId=${userId}`);
           console.log("incomeCategoryData:", response.data);
           setIncomeCategoryData(response.data);
           // console.log("incomeCategoryData"+response.data);
@@ -37,13 +37,13 @@ const Dashboard = () => {
       };
       fetchIncomeCategoryData();
     }
-  }, [userId, incomeCategoryData]);  // Re-run the effect whenever userId or incomeCategoryData changes
+  }, [userId]);  // Re-run the effect whenever userId or incomeCategoryData changes
 
   useEffect(() => {
     if (userId) {  // Only fetch data if userId exists
       const fetchExpenseCategoryData = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/v1/summary-controller/category-ExpenseSummary?userId=${userId}`);
+          const response = await axios.get(`/api/v1/summary-controller/category-ExpenseSummary?userId=${userId}`);
           setExpenseCategoryData(response.data);
         } catch (error) {
           console.error('Error fetching expense category data:', error.response?.data || error.message);
@@ -60,7 +60,7 @@ const Dashboard = () => {
       if (userId) {  // Only fetch data if userId exists
         const fetchSummaryData = async () => {
           try {
-            const response = await axios.get(`http://localhost:8080/api/v1/summary-controller/summary?userId=${userId}`);
+            const response = await axios.get(`/api/v1/summary-controller/summary?userId=${userId}`);
             setSummaryData(response.data);
           } catch (error) {
             console.error('Error fetching summary data:', error.response?.data || error.message);
@@ -74,7 +74,7 @@ const Dashboard = () => {
       if (userId) {  // Only fetch data if userId exists
         const fetchMonthlyData = async () => {
           try {
-            const response = await axios.get(`http://localhost:8080/api/v1/summary-controller/monthly-summary?userId=${userId}`);
+            const response = await axios.get(`api/v1/summary-controller/monthly-summary?userId=${userId}`);
             setMonthlyData(response.data);
           } catch (error) {
             console.error('Error fetching monthly data:', error);
